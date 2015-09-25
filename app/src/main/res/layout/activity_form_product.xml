@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <EditText
+        android:id="@+id/editTextNameProduct"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:hint="@string/lbl_name"
+        android:inputType="text"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextAmountProduct"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:hint="@string/lbl_amount"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/editTextMinAmountProduct"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:hint="@string/lbl_min_amount"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/editTextPriceProduct"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="right"
+            android:hint="@string/lbl_price"
+            android:inputType="numberDecimal"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextDescriptionProduct"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:gravity="left|top"
+        android:hint="@string/lbl_description"
+        android:inputType="textCapSentences|textMultiLine"
+        android:scrollHorizontally="false"/>
+
+</LinearLayout>

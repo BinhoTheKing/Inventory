@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Inventory Control</string>
+    <string name="lbl_product_image">Product Image</string>
+    <string name="lbl_name">Name</string>
+    <string name="lbl_amount">Amount</string>
+    <string name="lbl_min_amount">Min Amount</string>
+    <string name="lbl_price">Price</string>
+    <string name="lbl_add">Add</string>
+    <string name="lbl_save">Save</string>
+    <string name="lbl_edit">Edit</string>
+    <string name="lbl_delete">Delete</string>
+    <string name="lbl_description">Description</string>
+</resources>

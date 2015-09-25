@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/line_height"
+              android:orientation="horizontal"
+              android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/imageViewProduct"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="2.5dp"
+        android:layout_weight="2"
+        android:background="@color/background_floating_material_dark"
+        android:contentDescription="@string/lbl_product_image"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/textViewNameProduct"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="2.5dp"
+        android:layout_weight="4"
+        android:gravity="left|center"/>
+
+    <TextView
+        android:id="@+id/textViewQtdProduct"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="2.5dp"
+        android:layout_weight="2"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/textViewPriceProduct"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="2.5dp"
+        android:layout_weight="2"
+        android:gravity="right|center"/>
+
+</LinearLayout>
