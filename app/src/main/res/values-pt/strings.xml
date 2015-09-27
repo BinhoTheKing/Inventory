@@ -10,4 +10,7 @@
     <string name="lbl_edit">Edit</string>
     <string name="lbl_delete">Delete</string>
     <string name="lbl_description">Description</string>
+    <string name="lbl_image">Image</string>
+    <string name="lbl_prod_name">Product name</string>
+    <string name="lbl_qtd">Qtd</string>
 </resources>
