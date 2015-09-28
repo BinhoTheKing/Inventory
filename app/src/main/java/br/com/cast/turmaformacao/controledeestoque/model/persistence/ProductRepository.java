@@ -18,11 +18,11 @@ public final class ProductRepository {
 		DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance();
 		SQLiteDatabase db = dataBaseHelper.getWritableDatabase();
 		ContentValues values = ProductContract.getContentValues($Product);
-		if ($Product.getId() == null) {
+		if ($Product.get_Id() == null) {
 			db.insert(ProductContract.TABLE, null, values);
 		} else {
 			String where = ProductContract.ID + " = ? ";
-			String[] params = {$Product.getId().toString()};
+			String[] params = {$Product.get_Id().toString()};
 			db.update(ProductContract.TABLE,values,where,params);
 		}
 		db.close();
@@ -35,7 +35,7 @@ public final class ProductRepository {
 
 		String where = ProductContract.ID + " = ? ";
 		String[] params = {$Id.toString()};
-		db.update(ProductContract.TABLE,null,where,params);
+		db.delete(ProductContract.TABLE,where,params);
 
 		db.close();
 		dataBaseHelper.close();

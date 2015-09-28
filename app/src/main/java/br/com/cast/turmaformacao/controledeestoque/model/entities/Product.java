@@ -3,14 +3,37 @@ package br.com.cast.turmaformacao.controledeestoque.model.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product implements Parcelable {
-	//ToDo implementar atributo imagem
-	private Long id;
+	@JsonIgnore
+	private Long _Id;
+
+	@JsonProperty("id")
+	private Long webId;
+
+	@JsonProperty("image")
+	private String imageSrc;
+
+	@JsonProperty("name")
 	private String name;
+
+	@JsonProperty("description")
 	private String description;
+
+	@JsonProperty("stock")
 	private Long amount;
+
+	@JsonProperty("minimunStock")
 	private Long minAmount;
+
+	@JsonProperty("unitaryValue")
 	private Double unitPrice;
+
+	@JsonProperty("date")
+	private Long date;
+
 	public static String PRODUCT_PARAM = "PRODUCT";
 
 	public Product() {
@@ -22,16 +45,18 @@ public class Product implements Parcelable {
 		unitPrice = 0.0;
 	}
 
-	protected Product(Parcel in) {
-		readFromParcel(in);
+	public void setFromWeb(Product $FromWeb){
+		imageSrc = $FromWeb.imageSrc;
+		name = $FromWeb.name;
+		description = $FromWeb.description;
+		amount = $FromWeb.amount;
+		minAmount = $FromWeb.minAmount;
+		unitPrice = $FromWeb.unitPrice;
+		date = $FromWeb.date;
 	}
 
-	private void readFromParcel(Parcel in) {
-		name = in.readString();
-		description = in.readString();
-		amount = in.readLong();
-		minAmount = in.readLong();
-		unitPrice = in.readDouble();
+	protected Product(Parcel in) {
+		readFromParcel(in);
 	}
 
 	public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -46,12 +71,28 @@ public class Product implements Parcelable {
 		}
 	};
 
-	public Long getId() {
-		return id;
+	public Long get_Id() {
+		return _Id;
 	}
 
-	public void setId(Long $Id) {
-		id = $Id;
+	public void set_Id(Long $_Id) {
+		_Id = $_Id;
+	}
+
+	public Long getWebId() {
+		return webId;
+	}
+
+	public void setWebId(Long $WebId) {
+		webId = $WebId;
+	}
+
+	public String getImageSrc() {
+		return imageSrc;
+	}
+
+	public void setImageSrc(String $ImageSrc) {
+		imageSrc = $ImageSrc;
 	}
 
 	public String getName() {
@@ -94,6 +135,14 @@ public class Product implements Parcelable {
 		unitPrice = $UnitPrice;
 	}
 
+	public Long getDate() {
+		return date;
+	}
+
+	public void setDate(Long $Date) {
+		date = $Date;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -101,21 +150,14 @@ public class Product implements Parcelable {
 
 		Product product = (Product) o;
 
-		if (!name.equals(product.name)) return false;
-		if (!description.equals(product.description)) return false;
-		if (!amount.equals(product.amount)) return false;
-		if (!minAmount.equals(product.minAmount)) return false;
-		return unitPrice.equals(product.unitPrice);
+		return webId.equals(product.webId);
 
 	}
 
 	@Override
 	public int hashCode() {
-		int result = name.hashCode();
-		result = 31 * result + description.hashCode();
-		result = 31 * result + amount.hashCode();
-		result = 31 * result + minAmount.hashCode();
-		result = 31 * result + unitPrice.hashCode();
+		int result = webId.hashCode();
+		result = 31 * result + date.hashCode();
 		return result;
 	}
 
@@ -135,12 +177,28 @@ public class Product implements Parcelable {
 		return 0;
 	}
 
+	private void readFromParcel(Parcel in) {
+		_Id = in.readLong();
+		webId = in.readLong();
+		imageSrc = in.readString();
+		name = in.readString();
+		description = in.readString();
+		amount = in.readLong();
+		minAmount = in.readLong();
+		unitPrice = in.readDouble();
+		date = in.readLong();
+	}
+
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(_Id != null ? _Id : -1);
+		dest.writeLong(webId != null ? webId : -1);
+		dest.writeString(imageSrc);
 		dest.writeString(name != null ? name : "");
 		dest.writeString(description != null ? description : "");
 		dest.writeLong(amount != null ? amount : 0);
 		dest.writeLong(minAmount != null ? minAmount : 0);
 		dest.writeDouble(unitPrice != null ? unitPrice : 0.0);
+		dest.writeLong(date != null ? date : 0);
 	}
 }

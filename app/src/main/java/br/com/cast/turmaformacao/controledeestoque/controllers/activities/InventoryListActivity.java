@@ -1,8 +1,6 @@
 package br.com.cast.turmaformacao.controledeestoque.controllers.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -20,8 +18,11 @@ import br.com.cast.turmaformacao.controledeestoque.R;
 import br.com.cast.turmaformacao.controledeestoque.controllers.adapters.InventoryListAdapter;
 import br.com.cast.turmaformacao.controledeestoque.model.entities.Product;
 import br.com.cast.turmaformacao.controledeestoque.model.services.ProductBusinessService;
+import br.com.cast.turmaformacao.controledeestoque.model.services.ProductHTTPService;
+import br.com.cast.turmaformacao.controledeestoque.util.AsyncUtil;
+import br.com.cast.turmaformacao.controledeestoque.util.Synchronizable;
 
-public class InventoryListActivity extends AppCompatActivity {
+public class InventoryListActivity extends AppCompatActivity implements Synchronizable {
 
 	private ListView listViewInventory;
 	private List<Product> products;
@@ -56,13 +57,13 @@ public class InventoryListActivity extends AppCompatActivity {
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		getMenuInflater().inflate(R.menu.context_menu_list_product,menu);
+		getMenuInflater().inflate(R.menu.context_menu_list_product, menu);
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()){
+		switch (item.getItemId()) {
 			case R.id.contextMenuEdit:
 				onMenuEditClick();
 				break;
@@ -79,54 +80,69 @@ public class InventoryListActivity extends AppCompatActivity {
 
 	private void onMenuDeleteClick() {
 		ProductBusinessService.delete(selectedItem);
+		new AsyncUtil().execute(this);
 	}
 
 
 	private void redirectToProductFormActivity(Product $Product) {
 		Intent goToProductFormActivity = new Intent(InventoryListActivity.this, ProductFormActivity.class);
-		goToProductFormActivity.putExtra(Product.PRODUCT_PARAM,$Product);
+		goToProductFormActivity.putExtra(Product.PRODUCT_PARAM, $Product);
 		startActivity(goToProductFormActivity);
 	}
 
 	private void initProducts() {
-		products = ProductBusinessService.findAll();
+		products = ProductBusinessService.fetchWeb();
+
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		new AsyncUtil().execute();
+		new AsyncUtil().execute(this);
 	}
-	class AsyncUtil extends AsyncTask<Void,Void,Void> {
 
-		ProgressDialog progressDialog = new ProgressDialog(InventoryListActivity.this);
+	@Override
+	public Void synchronize(Integer... params) {
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL) ;
-			progressDialog.setIndeterminate(true);
-			progressDialog.show();
+		switch (params[0]) {
+			case 1:
+				initProducts();
+				break;
+			case 2:
+				bindListViewInventory();
+				break;
 		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			initProducts();
-			bindListViewInventory();
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-			super.onProgressUpdate(values);
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			super.onPostExecute(aVoid);
-			progressDialog.dismiss();
-		}
+		return null;
 	}
+//	class AsyncUtil extends AsyncTask<Void,Void,Void> {
+//
+//		ProgressDialog progressDialog = new ProgressDialog(InventoryListActivity.this);
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL) ;
+//			progressDialog.setIndeterminate(true);
+//			progressDialog.setCancelable(false);
+//			progressDialog.show();
+//		}
+//
+//		@Override
+//		protected Void doInBackground(Void... params) {
+//			return null;
+//		}
+//
+//		@Override
+//		protected void onProgressUpdate(Void... values) {
+//			super.onProgressUpdate(values);
+//		}
+//
+//		@Override
+//		protected void onPostExecute(Void aVoid) {
+//			super.onPostExecute(aVoid);
+//			progressDialog.dismiss();
+//		}
+//	}
 
 	private void bindListViewInventory() {
 		listViewInventory = (ListView) findViewById(R.id.listViewInventory);

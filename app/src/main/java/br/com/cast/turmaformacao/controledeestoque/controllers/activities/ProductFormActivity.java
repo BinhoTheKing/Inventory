@@ -22,7 +22,6 @@ public class ProductFormActivity extends AppCompatActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_form_product);
-		initProduct();
 	}
 
 	@Override
@@ -47,14 +46,6 @@ public class ProductFormActivity extends AppCompatActivity {
 		finish();
 	}
 
-	private void bindProduct() {
-		product.setName(editTextNameProductView.getText().toString());
-		product.setAmount(Long.parseLong(editTextAmountProductView.getText().toString()));
-		product.setMinAmount(Long.parseLong(editTextMinAmountProductView.getText().toString()));
-		product.setUnitPrice(Double.parseDouble(editTextPriceProductView.getText().toString()));
-		product.setDescription(editTextDescriptionProductView.getText().toString());
-	}
-
 	private void initProduct() {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -63,9 +54,18 @@ public class ProductFormActivity extends AppCompatActivity {
 		product = product != null ? product : new Product();
 	}
 
+	private void bindProduct() {
+		product.setName(editTextNameProductView.getText().toString());
+		product.setAmount(Long.parseLong(editTextAmountProductView.getText().toString()));
+		product.setMinAmount(Long.parseLong(editTextMinAmountProductView.getText().toString()));
+		product.setUnitPrice(Double.parseDouble(editTextPriceProductView.getText().toString()));
+		product.setDescription(editTextDescriptionProductView.getText().toString());
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
+		initProduct();
 		bindLayoutComponents();
 	}
 
