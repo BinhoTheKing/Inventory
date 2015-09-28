@@ -1,6 +1,8 @@
 package br.com.cast.turmaformacao.controledeestoque.controllers.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.cast.turmaformacao.controledeestoque.R;
@@ -18,7 +21,7 @@ import br.com.cast.turmaformacao.controledeestoque.controllers.adapters.Inventor
 import br.com.cast.turmaformacao.controledeestoque.model.entities.Product;
 import br.com.cast.turmaformacao.controledeestoque.model.services.ProductBusinessService;
 
-public class InventoryListActivity extends AppCompatActivity{
+public class InventoryListActivity extends AppCompatActivity {
 
 	private ListView listViewInventory;
 	private List<Product> products;
@@ -28,6 +31,7 @@ public class InventoryListActivity extends AppCompatActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_product);
+		products = new ArrayList<>();
 	}
 
 	@Override
@@ -91,13 +95,42 @@ public class InventoryListActivity extends AppCompatActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		initProducts();
-		bindListViewInventory();
+		new AsyncUtil().execute();
+	}
+	class AsyncUtil extends AsyncTask<Void,Void,Void> {
+
+		ProgressDialog progressDialog = new ProgressDialog(InventoryListActivity.this);
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL) ;
+			progressDialog.setIndeterminate(true);
+			progressDialog.show();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			initProducts();
+			bindListViewInventory();
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			super.onProgressUpdate(values);
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			progressDialog.dismiss();
+		}
 	}
 
 	private void bindListViewInventory() {
 		listViewInventory = (ListView) findViewById(R.id.listViewInventory);
-		listViewInventory.setAdapter(new InventoryListAdapter(this,products));
+		listViewInventory.setAdapter(new InventoryListAdapter(this, products));
 		registerForContextMenu(listViewInventory);
 		listViewInventory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
