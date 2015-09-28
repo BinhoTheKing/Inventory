@@ -32,20 +32,22 @@ public class ProductBusinessService {
 		List<Product> products;
 		products = ProductBusinessService.findAll();
 		webProducts = ProductHTTPService.getProductsFromWeb();
-		if (webProducts != null) {
+		if (webProducts != null || !webProducts.isEmpty()) {
 			for (Product wp : webProducts) {
-				for (Product p : products) {
-					if (wp.equals(p)) {
-						if (wp.getDate() > p.getDate()) {
-							p.setFromWeb(wp);
-							update(p);
-						} else {
-							if (p.getDate() > wp.getDate()) {
-								ProductHTTPService.postProductToWeb(p);
+				if (products != null || !products.isEmpty()) {
+					for (Product p : products) {
+						if (wp.equals(p)) {
+							if (wp.getDate() > p.getDate()) {
+								p.setFromWeb(wp);
+								update(p);
+							} else {
+								if (p.getDate() > wp.getDate()) {
+									ProductHTTPService.postProductToWeb(p);
+								}
 							}
+						} else {
+							save(wp);
 						}
-					} else {
-						save(wp);
 					}
 				}
 			}
