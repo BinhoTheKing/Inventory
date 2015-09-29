@@ -19,8 +19,9 @@ public class ProductContract {
 	public static final String MIN_AMOUNT = "min_amount";
 	public static final String UNIT_PRICE = "unit_price";
 	public static final String DATE = "date";
+	public static final String FLAG_SYNCH = "flag_synch";
 
-	public static final String[] COLUMNS = {ID, WEB_ID, IMAGE_SRC, NAME, DESCRIPTION, AMOUNT, MIN_AMOUNT, UNIT_PRICE, DATE};
+	public static final String[] COLUMNS = {ID, WEB_ID, IMAGE_SRC, NAME, DESCRIPTION, AMOUNT, MIN_AMOUNT, UNIT_PRICE, DATE, FLAG_SYNCH};
 
 
 	public static String getCreateTableScript() {
@@ -35,7 +36,8 @@ public class ProductContract {
 		create.append(AMOUNT + " INTEGER, ");
 		create.append(MIN_AMOUNT + " INTEGER, ");
 		create.append(UNIT_PRICE + " REAL, ");
-		create.append(DATE + " INTEGER ");
+		create.append(DATE + " INTEGER, ");
+		create.append(FLAG_SYNCH + " INTEGER ");
 		create.append(" ); ");
 		return create.toString();
 	}
@@ -51,12 +53,13 @@ public class ProductContract {
 		contentValues.put(MIN_AMOUNT, $Product.getMinAmount());
 		contentValues.put(UNIT_PRICE, $Product.getUnitPrice());
 		contentValues.put(DATE, $Product.getDate());
+		contentValues.put(FLAG_SYNCH, $Product.isFlagSynch() ? 1 : 0);
 		return contentValues;
 	}
 
-	public static Product getProduct(Cursor $Cursor){
+	public static Product getProduct(Cursor $Cursor) {
 		Product product = new Product();
-		if(!$Cursor.isBeforeFirst() || $Cursor.moveToNext()){
+		if (!$Cursor.isBeforeFirst() || $Cursor.moveToNext()) {
 			product.set_Id($Cursor.getLong($Cursor.getColumnIndex(ID)));
 			product.setWebId($Cursor.getLong($Cursor.getColumnIndex(WEB_ID)));
 			product.setImageSrc($Cursor.getString($Cursor.getColumnIndex(IMAGE_SRC)));
@@ -66,13 +69,14 @@ public class ProductContract {
 			product.setMinAmount($Cursor.getLong($Cursor.getColumnIndex(MIN_AMOUNT)));
 			product.setUnitPrice($Cursor.getDouble($Cursor.getColumnIndex(UNIT_PRICE)));
 			product.setDate($Cursor.getLong($Cursor.getColumnIndex(DATE)));
+			product.setFlagSynch($Cursor.getInt($Cursor.getColumnIndex(FLAG_SYNCH)) != 0);
 		}
 		return product;
 	}
 
-	public static List<Product> getProducts(Cursor $Cursor){
+	public static List<Product> getProducts(Cursor $Cursor) {
 		List<Product> products = new ArrayList<>();
-		while ($Cursor.moveToNext()){
+		while ($Cursor.moveToNext()) {
 			products.add(getProduct($Cursor));
 		}
 		return products;

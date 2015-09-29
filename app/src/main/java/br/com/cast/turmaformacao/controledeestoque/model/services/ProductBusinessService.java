@@ -30,29 +30,44 @@ public class ProductBusinessService {
 	public static List<Product> fetchWeb() {
 		List<Product> webProducts;
 		List<Product> products;
+		Product persist;
 		products = ProductBusinessService.findAll();
 		webProducts = ProductHTTPService.getProductsFromWeb();
-		if (webProducts != null || !webProducts.isEmpty()) {
+		if (webProducts != null) {
 			for (Product wp : webProducts) {
-				if (products != null || !products.isEmpty()) {
+				if (products != null) {
 					for (Product p : products) {
-						if (wp.equals(p)) {
-							if (wp.getDate() > p.getDate()) {
-								p.setFromWeb(wp);
-								update(p);
-							} else {
-								if (p.getDate() > wp.getDate()) {
-									ProductHTTPService.postProductToWeb(p);
-								}
-							}
-						} else {
-							save(wp);
+						persist = toPersist(wp,p);
+						if(persist!=null){
+							save(persist);
 						}
 					}
 				}
 			}
 		}
+		if(products!=null){
+			for (Product p :
+					products) {
+				if (p.isFlagSynch()){
+					delete(p);
+				}
+			}
+		}
+
 
 		return findAll();
+	}
+
+	private static Product toPersist(Product $P1, Product $P2){
+		if($P1.equals($P2)){
+			$P1.setFlagSynch(true);
+			$P2.setFlagSynch(true);
+			if ($P1.getDate()>=$P2.getDate()) {
+				return $P1;
+			}else{
+				return $P2;
+			}
+		}
+		return null;
 	}
 }

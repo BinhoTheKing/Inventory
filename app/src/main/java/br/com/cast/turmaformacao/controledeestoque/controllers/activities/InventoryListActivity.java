@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.cast.turmaformacao.controledeestoque.R;
-import br.com.cast.turmaformacao.controledeestoque.controllers.adapters.InventoryListAdapter;
+import br.com.cast.turmaformacao.controledeestoque.controllers.adapters.ProductListAdapter;
 import br.com.cast.turmaformacao.controledeestoque.model.entities.Product;
 import br.com.cast.turmaformacao.controledeestoque.model.services.ProductBusinessService;
-import br.com.cast.turmaformacao.controledeestoque.model.services.ProductHTTPService;
 import br.com.cast.turmaformacao.controledeestoque.util.AsyncUtil;
 import br.com.cast.turmaformacao.controledeestoque.util.Synchronizable;
 
@@ -114,39 +113,10 @@ public class InventoryListActivity extends AppCompatActivity implements Synchron
 		}
 		return null;
 	}
-//	class AsyncUtil extends AsyncTask<Void,Void,Void> {
-//
-//		ProgressDialog progressDialog = new ProgressDialog(InventoryListActivity.this);
-//
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL) ;
-//			progressDialog.setIndeterminate(true);
-//			progressDialog.setCancelable(false);
-//			progressDialog.show();
-//		}
-//
-//		@Override
-//		protected Void doInBackground(Void... params) {
-//			return null;
-//		}
-//
-//		@Override
-//		protected void onProgressUpdate(Void... values) {
-//			super.onProgressUpdate(values);
-//		}
-//
-//		@Override
-//		protected void onPostExecute(Void aVoid) {
-//			super.onPostExecute(aVoid);
-//			progressDialog.dismiss();
-//		}
-//	}
 
 	private void bindListViewInventory() {
 		listViewInventory = (ListView) findViewById(R.id.listViewInventory);
-		listViewInventory.setAdapter(new InventoryListAdapter(this, products));
+		listViewInventory.setAdapter(new ProductListAdapter(this, products));
 		registerForContextMenu(listViewInventory);
 		listViewInventory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override

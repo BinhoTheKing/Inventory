@@ -9,6 +9,7 @@ import android.widget.EditText;
 import br.com.cast.turmaformacao.controledeestoque.R;
 import br.com.cast.turmaformacao.controledeestoque.model.entities.Product;
 import br.com.cast.turmaformacao.controledeestoque.model.services.ProductBusinessService;
+import br.com.cast.turmaformacao.controledeestoque.model.services.ProductHTTPService;
 
 public class ProductFormActivity extends AppCompatActivity {
 	private Product product;
@@ -43,6 +44,8 @@ public class ProductFormActivity extends AppCompatActivity {
 	private void onMenuSaveClick() {
 		bindProduct();
 		ProductBusinessService.save(product);
+		ProductHTTPService.postProductToWeb(product);
+		ProductBusinessService.update(product);
 		finish();
 	}
 

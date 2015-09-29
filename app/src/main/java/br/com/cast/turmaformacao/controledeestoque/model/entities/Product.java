@@ -34,6 +34,9 @@ public class Product implements Parcelable {
 	@JsonProperty("date")
 	private Long date;
 
+	@JsonIgnore
+	private boolean flagSynch = false;
+
 	public static String PRODUCT_PARAM = "PRODUCT";
 
 	public Product() {
@@ -43,9 +46,10 @@ public class Product implements Parcelable {
 		amount = (long) 0;
 		minAmount = (long) 0;
 		unitPrice = 0.0;
+		date = (long) 0;
 	}
 
-	public void setFromWeb(Product $FromWeb){
+	public void setFromWeb(Product $FromWeb) {
 		imageSrc = $FromWeb.imageSrc;
 		name = $FromWeb.name;
 		description = $FromWeb.description;
@@ -143,6 +147,14 @@ public class Product implements Parcelable {
 		date = $Date;
 	}
 
+	public boolean isFlagSynch() {
+		return flagSynch;
+	}
+
+	public void setFlagSynch(boolean $FlagSynch) {
+		flagSynch = $FlagSynch;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -151,7 +163,6 @@ public class Product implements Parcelable {
 		Product product = (Product) o;
 
 		return webId.equals(product.webId);
-
 	}
 
 	@Override
@@ -187,6 +198,7 @@ public class Product implements Parcelable {
 		minAmount = in.readLong();
 		unitPrice = in.readDouble();
 		date = in.readLong();
+		flagSynch = in.readByte() != 0;
 	}
 
 	@Override
@@ -200,5 +212,6 @@ public class Product implements Parcelable {
 		dest.writeLong(minAmount != null ? minAmount : 0);
 		dest.writeDouble(unitPrice != null ? unitPrice : 0.0);
 		dest.writeLong(date != null ? date : 0);
+		dest.writeByte((byte) (flagSynch ? 1 : 0));
 	}
 }

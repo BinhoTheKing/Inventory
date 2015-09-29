@@ -18,7 +18,7 @@ public final class ProductRepository {
 		SQLiteDatabase db = dataBaseHelper.getWritableDatabase();
 		ContentValues values = ProductContract.getContentValues($Product);
 		if ($Product.get_Id() == null) {
-			db.insert(ProductContract.TABLE, null, values);
+			$Product.set_Id(db.insert(ProductContract.TABLE, null, values));
 		} else {
 			String where = ProductContract.ID + " = ? ";
 			String[] params = {$Product.get_Id().toString()};

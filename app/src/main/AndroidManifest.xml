@@ -1,7 +1,12 @@
-<manifest package="br.com.cast.turmaformacao.controledeestoque"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="br.com.cast.turmaformacao.controledeestoque"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <uses-permission android:name="android.permission.INTERNET"/>
-    
+    <uses-sdk
+        android:maxSdkVersion="23"
+        android:minSdkVersion="22"/>
+
 
     <application
         android:name=".InventoryControlApplication"
@@ -9,14 +14,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".controllers.activities.InventoryListActivity"
+        <activity
+            android:name=".controllers.activities.InventoryListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.launcher"/>
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.activities.ProductFormActivity"
+        <activity
+            android:name=".controllers.activities.ProductFormActivity"
             android:label="@string/app_name"/>
 
     </application>
