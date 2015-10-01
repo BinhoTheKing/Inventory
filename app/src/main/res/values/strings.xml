@@ -13,4 +13,8 @@
     <string name="lbl_image">Image</string>
     <string name="lbl_prod_name">Product name</string>
     <string name="lbl_qtd">Qtd</string>
+    <string name="lbl_synch">Synchronizing</string>
+    <string name="lbl_no">Não</string>
+    <string name="lbl_yes">Sim</string>
+    <string name="msg_ask_delete">Realmente deletar esse item?</string>
 </resources>

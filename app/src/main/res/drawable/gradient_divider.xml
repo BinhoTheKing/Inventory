@@ -4,4 +4,7 @@
         android:startColor="@color/background_floating_material_light"
         android:centerColor="@color/background_floating_material_dark"
         android:endColor="@color/background_floating_material_light"/>
+    <size
+        android:width="9dp"
+        android:height="9dp"/>
 </shape>

@@ -1,15 +1,16 @@
 package br.com.cast.turmaformacao.controledeestoque.controllers.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import br.com.cast.turmaformacao.controledeestoque.util.Synchronizable;
 
 public class InventoryListActivity extends AppCompatActivity implements Synchronizable {
 
-	private ListView listViewInventory;
+	private RecyclerView recyclerViewInventory;
 	private List<Product> products;
 	private Product selectedItem;
 
@@ -78,6 +79,8 @@ public class InventoryListActivity extends AppCompatActivity implements Synchron
 	}
 
 	private void onMenuDeleteClick() {
+
+
 		ProductBusinessService.delete(selectedItem);
 		new AsyncUtil().execute(this);
 	}
@@ -101,9 +104,9 @@ public class InventoryListActivity extends AppCompatActivity implements Synchron
 	}
 
 	@Override
-	public Void synchronize(Integer... params) {
+	public Void synchronize(Integer param) {
 
-		switch (params[0]) {
+		switch (param) {
 			case 1:
 				initProducts();
 				break;
@@ -115,16 +118,37 @@ public class InventoryListActivity extends AppCompatActivity implements Synchron
 	}
 
 	private void bindListViewInventory() {
-		listViewInventory = (ListView) findViewById(R.id.listViewInventory);
-		listViewInventory.setAdapter(new ProductListAdapter(this, products));
-		registerForContextMenu(listViewInventory);
-		listViewInventory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+		recyclerViewInventory = (RecyclerView) findViewById(R.id.recyclerViewInventory);
+		recyclerViewInventory.setLayoutManager(new LinearLayoutManager(this));
+		recyclerViewInventory.setAdapter(new ProductListAdapter(products) {
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				ListAdapter adapter = listViewInventory.getAdapter();
-				selectedItem = (Product) adapter.getItem(position);
-				return false;
+			public void onMenuEditClick(Product p) {
+				redirectToProductFormActivity(p);
+			}
+
+			@Override
+			public void onMenuDeleteClick(Product p) {
+				new AlertDialog.Builder(InventoryListActivity.this)
+						.setMessage(R.string.msg_ask_delete)
+						.setNeutralButton(getString(R.string.lbl_no), null)
+						.setPositiveButton(getString(R.string.lbl_yes), new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								ProductBusinessService.delete(selectedItem);
+								new AsyncUtil().execute(InventoryListActivity.this);
+							}
+						})
+						.create()
+						.show();
 			}
 		});
+//		recyclerViewInventory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//				ListAdapter adapter = recyclerViewInventory.getAdapter();
+//				selectedItem = (Product) adapter.getItem(position);
+//				return false;
+//			}
+//		});
 	}
 }

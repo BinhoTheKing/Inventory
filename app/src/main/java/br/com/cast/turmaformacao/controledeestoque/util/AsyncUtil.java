@@ -1,11 +1,10 @@
 package br.com.cast.turmaformacao.controledeestoque.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import br.com.cast.turmaformacao.controledeestoque.controllers.activities.InventoryListActivity;
+import br.com.cast.turmaformacao.controledeestoque.R;
 
 public class AsyncUtil extends AsyncTask<Synchronizable, Activity, Void> {
 
@@ -27,7 +26,8 @@ public class AsyncUtil extends AsyncTask<Synchronizable, Activity, Void> {
 	@Override
 	protected void onProgressUpdate(Activity... values) {
 		progressDialog = new ProgressDialog(values[0]);
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL) ;
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setMessage(values[0].getResources().getString(R.string.lbl_synch));
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCancelable(false);
 		progressDialog.show();
